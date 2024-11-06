@@ -1,7 +1,13 @@
 import { denominations } from "./data";
 import parseDenominationValue from "../utils";
 
-function DenominationInput({ currency, type, quantities, onQuantityChange }) {
+function DenominationInput({
+  currency,
+  type,
+  quantities,
+  onQuantityChange,
+  onReset,
+}) {
   const currencyData = denominations[currency];
 
   const selectedDenominations =
@@ -14,16 +20,28 @@ function DenominationInput({ currency, type, quantities, onQuantityChange }) {
           type === "notes" ? `note-${denomination}` : `coin-${denomination}`
         );
 
+  const calculateHandler = () => {
+    const total = selectedDenominations.reduce((sum, denomination) => {
+      const amount = quantities[denomination] || 0;
+      const denominationValue = parseDenominationValue(
+        denomination.replace("note-", "").replace("coin-", "")
+      );
+      return sum + amount * denominationValue;
+    }, 0);
+    alert(`total is ${total}`);
+  };
+
   return (
     <div>
       {selectedDenominations.map((denomination) => {
-        const uniqueKey = `${currency}-${type}-${denomination}`;
+        const displayValue = denomination
+          .replace("note-", "")
+          .replace("coin-", "");
+        const uniqueKey = `${currency}-${denomination}`;
 
         return (
           <div key={uniqueKey}>
-            <label>
-              {denomination.replace("note-", "").replace("coin-", "")}:
-            </label>
+            <label>{displayValue}:</label>
             <input
               type="number"
               value={quantities[denomination] || 0}
@@ -35,7 +53,8 @@ function DenominationInput({ currency, type, quantities, onQuantityChange }) {
           </div>
         );
       })}
-      <input type="number" name="Moj Broj" id="45" />
+      <button onClick={calculateHandler}>Izbroji</button>
+      <button onClick={onReset}>Resetuj</button>
     </div>
   );
 }

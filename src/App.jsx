@@ -17,11 +17,20 @@ function App() {
     setQuantities({});
   };
 
+  const selectedTypeHandler = (e) => {
+    setSelectedType(e.target.value);
+    setQuantities({});
+  };
+
   const handleQuantityChange = (denomination, quantity) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
       [denomination]: quantity,
     }));
+  };
+
+  const resetHandler = () => {
+    setQuantities({});
   };
 
   return (
@@ -33,13 +42,14 @@ function App() {
       />
       <DenominationType
         selectedType={selectedType}
-        onSelectType={setSelectedType}
+        onChange={selectedTypeHandler}
       />
       <DenominationInput
         currency={selectedCurrency}
         type={selectedType}
         quantities={quantities}
         onQuantityChange={handleQuantityChange}
+        onReset={resetHandler}
       />
     </>
   );
