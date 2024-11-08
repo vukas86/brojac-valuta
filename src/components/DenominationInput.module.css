@@ -1,0 +1,36 @@
+input {
+  width: 50px;
+  height: 37px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.moneyContainer {
+  border: 2px solid white;
+  width: 600px;
+  border-radius: 6px;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.moneyInput {
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  padding: 6px;
+  border-radius: 8px;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.moneyInput label {
+  padding-bottom: 5px;
+}
+
+.moneyInput:focus-within {
+  background-color: #20aaee;
+  border: 1px solid aqua;
+}
