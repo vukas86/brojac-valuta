@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { denominations } from "./data";
 import parseDenominationValue from "../utils";
 
@@ -9,6 +11,7 @@ function DenominationInput({
   onReset,
 }) {
   const currencyData = denominations[currency];
+  const [total, setTotal] = useState(0);
 
   const selectedDenominations =
     type === "both"
@@ -21,14 +24,19 @@ function DenominationInput({
         );
 
   const calculateHandler = () => {
-    const total = selectedDenominations.reduce((sum, denomination) => {
+    const totalValue = selectedDenominations.reduce((sum, denomination) => {
       const amount = quantities[denomination] || 0;
       const denominationValue = parseDenominationValue(
         denomination.replace("note-", "").replace("coin-", "")
       );
       return sum + amount * denominationValue;
     }, 0);
-    alert(`total is ${total}`);
+    setTotal(totalValue);
+  };
+
+  const handleReset = () => {
+    onReset();
+    setTotal(0);
   };
 
   return (
@@ -54,7 +62,9 @@ function DenominationInput({
         );
       })}
       <button onClick={calculateHandler}>Izbroji</button>
-      <button onClick={onReset}>Resetuj</button>
+      <button onClick={handleReset}>Resetuj</button>
+
+      <div>Total: {total}</div>
     </div>
   );
 }
